@@ -6,5 +6,6 @@
         "use": true,
         "keyfile": "./key.pem",
         "certfile": "./cert.pem"
-    }
+    },
+    "admin_password": "admin"
 }

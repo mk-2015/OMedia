@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMedia Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="hero">
+            <div>
+                <p class="eyebrow">Private cloud storage</p>
+                <h1>Your dashboard</h1>
+                <p class="hero-copy">Manage your files, create folders, and preview text content.</p>
+            </div>
+            <div class="hero-actions">
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <section class="panel">
+                <h2>Storage</h2>
+                <div class="controls">
+                    <input id="folderInput" placeholder="Folder name (optional)" />
+                    <button id="mkdirBtn" class="btn">Create folder</button>
+                </div>
+                <form id="uploadForm" class="upload-box">
+                    <label for="file">Upload file</label>
+                    <input id="file" type="file" />
+                    <button class="btn btn-primary" type="submit">Upload</button>
+                </form>
+                <div id="status" class="status"></div>
+            </section>
+
+            <section class="panel">
+                <h2>Files</h2>
+                <div id="fileList" class="file-list"></div>
+            </section>
+        </main>
+    </div>
+    <script src="/userdashboard.js"></script>
+</body>
+</html>

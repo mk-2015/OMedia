@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMedia Admin</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="hero">
+            <div>
+                <p class="eyebrow">Admin panel</p>
+                <h1>OMedia admin</h1>
+                <p class="hero-copy">Manage users, inspect their files, and remove accounts.</p>
+            </div>
+            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+        </header>
+
+        <main class="dashboard">
+            <section class="panel">
+                <h2>Users</h2>
+                <div id="userList" class="file-list"></div>
+            </section>
+            <section class="panel">
+                <h2>User files</h2>
+                <div id="fileList" class="file-list"></div>
+            </section>
+        </main>
+    </div>
+    <script src="/admin.js"></script>
+</body>
+</html>

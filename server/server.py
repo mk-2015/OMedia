@@ -55,8 +55,8 @@ if config["cube"]["use"] or (len(sys.argv) >= 2 and sys.argv[1] == "--with-cube"
             sys.exit(-1)
         else:
             print("Error: Invalid Option. Please enter Y or N")
-    from modules.cube import cube_router
-    init_cube_cluster(config["cube"].get("workers", []))
+    from modules.cube import cube_router, init_cube_cluster
+    init_cube_cluster(config["cube"].get("workers", []), config["cube"].get("authtoken-firecracker", []))
     app.include_router(cube_router)
 app.mount("/", StaticFiles(directory=ROOT, html=True), name="static")
 

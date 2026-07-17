@@ -99,3 +99,23 @@ Contributing
 Contributions are welcome. Please fork the repository, make changes in a branch and submit a pull request.
 
 ### Cube
+
+- Repeat this with me:
+```coc
+I Will not share nor distribute AWS Firecracker tokens.
+```
+
+#### What is cube?
+* Cube is a VPS-Like system. Its supposed to be used for spinning up AWS Firecracker MicroVMS, execute commands, get output and shutdown
+
+#### Where can it be used?
+* It can be used anywhere like-homelabbing, offices (though use in private networks), or just accessing linux through the web.
+
+#### Whats linux?
+* Many people will probably ask this so: [Whats Linux? deep-dive](https://www.youtube.com/watch?v=ztUW6X7-RXE) or [read](https://forums.debian.net/viewtopic.php?t=54767&start=120)
+
+#### Whats a VPS?
+* a VPS stands for Virtual Private Server. Think of it like your home. its personal, and YOU! Own it. And firecracker the lock with its authentication token being the key to your home (VPS).
+
+#### Why is it needed in OCloud?
+* A Cloud is storage (OMedia) and Servers (Cube). to Even compete with google drive we need to, in-some way have a VPS.

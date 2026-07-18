@@ -5,14 +5,24 @@ Media storage and command execution heaven.
 Place runtime and network settings in server/config.json. Example:
 ```json
 {
-  "host": "0.0.0.0",
-  "port": 443,
-  "ssl": {
-    "use": true,
-    "keyfile": "./key.pem",
-    "certfile": "./cert.pem"
-  },
-  "admin_password": "admin"
+    "host": "0.0.0.0",
+    "port": 443,
+    "cube": 
+    {
+        "use": false,
+        "islocal": true,
+        "workers": 
+        [
+            "tcp://localhost:2750"
+        ]
+    },
+    "ssl": 
+    {
+        "use": true,
+        "keyfile": "./key.pem",
+        "certfile": "./cert.pem"
+    },
+    "admin_password": "admin"
 }
 ```
 

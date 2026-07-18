@@ -11,7 +11,26 @@ import docker
 cube_router = APIRouter()
 lmbservers: List[Dict[str, Any]] = []
 _lmb_lock = threading.Lock()
-client = docker.from_env()
+_node_lock = threading.Lock()
+
+clientnodes: List[docker.DockerClient] = []
+clientidx: int = 0
+islocal: bool = True
+
+def init_cube(workerarray: List, local = True):
+    global clientnodes, clientidx, islocal
+    with _node_lock:
+        if local:
+            islocal = True
+            clientidx = 0
+            try:
+                clientnodes = [docker.from_env()]
+            except Exception:
+                clientnodes = [docker.DockerClient(base_url="tcp://localhost:2375")]
+        else:
+            islocal = False
+            clientidx = 0
+            clientnodes = [docker.DockerClient(base_url=url) for url in workerarray]
 
 def _find_lambda(lambda_id: str, session: dict):
     for server in lmbservers:
@@ -22,12 +41,29 @@ def _find_lambda(lambda_id: str, session: dict):
     return None
 
 
+@cube_router.post("/api/cube")
+def cubemsg(request: Request):
+    return "Under Construction"
+
+
 @cube_router.post("/api/cube/lambda/launch")
 def launchlambda(request: Request):
+    global clientidx
     session = require_session(request, required_role="user")
+    
+    if not clientnodes:
+        return JSONResponse(
+            content={"success": False, "reason": "Cube runtime not initialized"},
+            status_code=503
+        )
+        
     lambdaid = secrets.token_hex(32)
 
-    container = client.containers.run(
+    with _node_lock:
+        target_client = clientnodes[clientidx]
+        clientidx = (clientidx + 1) % len(clientnodes)
+
+    container = target_client.containers.run(
         "fedora:44",
         command="sleep infinity",
         name=f"cube-lambda-{lambdaid}",
@@ -40,6 +76,7 @@ def launchlambda(request: Request):
             "lambda_id": lambdaid,
             "createdby": session,
             "container": container,
+            "node_client": target_client
         })
 
     return {"lambda_id": lambdaid, "createdby": session.get("username")}
@@ -71,11 +108,7 @@ def shutdownlambda(request: Request, lmdid: str):
 @cube_router.post("/api/cube/lamblets/exec")
 async def execlamblet(request: Request):
     session = require_session(request, required_role="user")
-    
-    try:
-        body = await request.json()
-    except Exception:
-        return JSONResponse(content={"success": False, "reason": "Malformed JSON body"}, status_code=400)
+    body = await request.json()
 
     lambda_id = body.get("lambda_id")
     command = body.get("command")
@@ -131,13 +164,18 @@ async def lambda_shell(websocket: WebSocket, lambda_id: str):
         return
 
     container = result["container"]
+    node_client = result["node_client"]
 
     try:
-        exec_inst = client.api.exec_create(
-            container.id, "sh", stdin=True, tty=True,
-            stdout=True, stderr=True
+        exec_inst = node_client.api.exec_create(
+            container.id,
+            cmd="",
+            stdin=True,
+            tty=True,
+            stdout=True,
+            stderr=True
         )
-        docker_sock = client.api.exec_start(exec_inst["Id"], socket=True, tty=True)
+        docker_sock = node_client.api.exec_start(exec_inst["Id"], socket=True, tty=True)
         raw_sock = docker_sock._sock
         raw_sock.setblocking(False) 
     except Exception as err:

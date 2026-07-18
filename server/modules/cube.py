@@ -169,7 +169,7 @@ async def lambda_shell(websocket: WebSocket, lambda_id: str):
     try:
         exec_inst = node_client.api.exec_create(
             container.id,
-            cmd="",
+            cmd="/bin/bash", 
             stdin=True,
             tty=True,
             stdout=True,
@@ -193,6 +193,10 @@ async def lambda_shell(websocket: WebSocket, lambda_id: str):
                 await websocket.send_bytes(data)
         except Exception:
             pass
+        finally:
+                await websocket.close(code=status.WS_1000_NORMAL_CLOSURE)
+            except Exception:
+                pass
 
     async def pump_ws_to_docker():
         try:

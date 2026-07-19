@@ -24,9 +24,9 @@ Set a value to `true` to enable, `false` to disable. Changes take effect on serv
 
 ## Creating an Extensor
 
-Extensors live in `server/modules/` and follow this pattern:
+Extensors live in `server/modules/extendors` and follow this pattern:
 
-1. Create a file `server/modules/myextensor.py`
+1. Create a file `server/modules/extendors/myextensor.py`
 2. Define an `APIRouter` and an `init` function
 3. Import and register the router in `server/server.py` under the `extendors` block
 4. Add a config key in `config.json`
@@ -34,7 +34,7 @@ Extensors live in `server/modules/` and follow this pattern:
 ### Minimal Example
 
 ```python
-# server/modules/myextensor.py
+# server/modules/extendors/myextensor.py
 from fastapi import APIRouter
 
 router = APIRouter()
@@ -50,7 +50,7 @@ def test():
 ```python
 # server/server.py (inside the extendors block)
 if config["extendors"]["myextensor"]:
-    from modules.myextensor import init, router
+    from modules.extendors.myextensor import init, router
     init()
     app.include_router(router)
 ```

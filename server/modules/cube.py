@@ -197,9 +197,7 @@ async def lambda_shell(websocket: WebSocket, lambda_id: str):
         except Exception:
             pass
         finally:
-                await websocket.close(code=status.WS_1000_NORMAL_CLOSURE)
-            except Exception:
-                pass
+            await websocket.close(code=status.WS_1000_NORMAL_CLOSURE)
 
     async def pump_ws_to_docker():
         try:

@@ -7,7 +7,7 @@
         "islocal": true,
         "workers": 
         [
-            "tcp://localhost:2750"
+            "tcp://localhost:2350"
         ]
     },
     "ssl": 

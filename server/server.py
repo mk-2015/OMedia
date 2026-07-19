@@ -9,7 +9,7 @@ import asyncio
 import os
 from modules.omedia import omedia_router
 from modules.auth import init_auth_config
-##
+
 t = True
 
 if len(sys.argv) >= 2 and sys.argv[1] == "init":
@@ -57,10 +57,18 @@ if config["cube"]["use"] or (len(sys.argv) >= 2 and sys.argv[1] == "--with-cube"
 if config["extendors"]["fileshare"]:
     print("[Extendor] extendor \"fileshare\" is on.")
     
-    from modules.fileshare import init_fileshare, Rfileshare
+    from modules.extend.fileshare import init_fileshare, Rfileshare
     init_fileshare()
     
     app.include_router(Rfileshare)
+    
+if config["extendors"]["monitord"]:
+    print("[Extendor] extendor \"monitord\" is on.")
+    
+    from modules.extend.monitord import init_monitord, monitord
+    init_monitord()
+    
+    app.include_router(monitord)
     
 app.mount("/", StaticFiles(directory=ROOT, html=True), name="static")
 

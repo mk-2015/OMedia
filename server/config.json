@@ -1,6 +1,6 @@
 {
     "host": "0.0.0.0",
-    "port": 80,
+    "port": 443,
     "cube": 
     {
         "use": false,
@@ -12,13 +12,14 @@
     },
     "ssl": 
     {
-        "use": false,
+        "use": true,
         "keyfile": "./key.pem",
         "certfile": "./cert.pem"
     },
 	"extendors":
 	{
-		"fileshare": true
+		"fileshare": true,
+		"monitord": true
 	},
     "admin_password": "admin"
 }

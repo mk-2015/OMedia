@@ -126,4 +126,4 @@ GET /api/fileshare/test
 
 ## File Location
 
-`server/modules/fileshare.py`
+`server/modules/extend/fileshare.py`

@@ -132,32 +132,6 @@ async def admin_delete_user(request: Request, username: str):
         shutil.rmtree(user_dir)
     return {"status": "Deleted"}
 
-@omedia_router.post("/api/del_user", status_code=status.HTTP_200_OK)
-async def delete_user(payload: dict, response: Response):
-    if not all(k in payload for k in ("username", "password")):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return {"error": "Missing required fields"}
-
-    async with aiosqlite.connect(DABA) as db:
-        cursor = await db.execute(
-            "SELECT id FROM users WHERE username = ? AND password = ?",
-            (payload["username"], payload["password"])
-        )
-        existing = await cursor.fetchone()
-        if not existing:
-            response.status_code = status.HTTP_404_NOT_FOUND
-            return {"error": "User not found"}
-        await db.execute(
-            "DELETE FROM users WHERE username = ? AND password = ?",
-            (payload["username"], payload["password"])
-        )
-        await db.commit()
-
-    user_dir = DATA / payload["username"]
-    if user_dir.exists():
-        shutil.rmtree(user_dir)
-    return {"status": "User deleted"}
-
 @omedia_router.get("/api/omedia/list/{username}")
 @omedia_router.get("/api/omedia/lsdir/{username}")
 async def list_user_files(request: Request, username: str, path: str = ""):
